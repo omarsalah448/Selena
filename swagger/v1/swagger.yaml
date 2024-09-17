@@ -1,0 +1,272 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/companies":
+    get:
+      summary: Retrieves all companies
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: companies found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    timezone:
+                      type: string
+                    work_week_start:
+                      type: string
+                  required:
+                  - id
+                  - name
+                  - timezone
+                  - work_week_start
+    post:
+      summary: Creates a company
+      tags:
+      - Companies
+      parameters: []
+      responses:
+        '201':
+          description: company created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                timezone:
+                  type: string
+                work_week_start:
+                  type: string
+              required:
+              - name
+              - timezone
+              - work_week_start
+  "/companies/{id}":
+    get:
+      summary: Retrieves a company
+      tags:
+      - Companies
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: company found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  timezone:
+                    type: string
+                  work_week_start:
+                    type: string
+                required:
+                - id
+                - name
+                - timezone
+                - work_week_start
+        '404':
+          description: company not found
+    put:
+      summary: Updates a company
+      tags:
+      - Companies
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: company updated
+        '404':
+          description: company not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                timezone:
+                  type: string
+                work_week_start:
+                  type: string
+    delete:
+      summary: Deletes a company
+      tags:
+      - Companies
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: company deleted
+        '404':
+          description: company not found
+  "/users":
+    post:
+      summary: Creates a user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: user created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                title:
+                  type: string
+                phone_number:
+                  type: string
+                company_attributes:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    timezone:
+                      type: string
+                    work_week_start:
+                      type: string
+              required:
+              - name
+              - email
+              - password
+              - title
+              - phone_number
+              - company_attributes
+  "/users/{id}":
+    get:
+      summary: Retrieves a user
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: user found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  title:
+                    type: string
+                  phone_number:
+                    type: string
+                  role:
+                    type: string
+                  company_id:
+                    type: integer
+                required:
+                - id
+                - name
+                - email
+                - title
+                - phone_number
+                - role
+        '404':
+          description: user not found
+    put:
+      summary: Updates a user
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: user updated
+        '404':
+          description: user not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                title:
+                  type: string
+                phone_number:
+                  type: string
+                company_id:
+                  type: string
+    delete:
+      summary: Deletes a user
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: user deleted
+        '404':
+          description: user not found
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
