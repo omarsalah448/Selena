@@ -27,11 +27,13 @@ paths:
                       type: string
                     work_week_start:
                       type: string
+                    start_day:
+                      type: integer
                   required:
                   - id
                   - name
                   - timezone
-                  - work_week_start
+                  - start_day
     post:
       summary: Creates a company
       tags:
@@ -52,12 +54,12 @@ paths:
                   type: string
                 timezone:
                   type: string
-                work_week_start:
-                  type: string
+                start_day:
+                  type: integer
               required:
               - name
               - timezone
-              - work_week_start
+              - start_day
   "/companies/{id}":
     get:
       summary: Retrieves a company
@@ -85,11 +87,13 @@ paths:
                     type: string
                   work_week_start:
                     type: string
+                  start_day:
+                    type: integer
                 required:
                 - id
                 - name
                 - timezone
-                - work_week_start
+                - start_day
         '404':
           description: company not found
     put:
@@ -107,6 +111,8 @@ paths:
           description: company updated
         '404':
           description: company not found
+        '422':
+          description: invalid request
       requestBody:
         content:
           application/json:
@@ -117,8 +123,8 @@ paths:
                   type: string
                 timezone:
                   type: string
-                work_week_start:
-                  type: string
+                start_day:
+                  type: integer
     delete:
       summary: Deletes a company
       tags:

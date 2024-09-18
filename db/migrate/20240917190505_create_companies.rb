@@ -3,9 +3,7 @@ class CreateCompanies < ActiveRecord::Migration[7.2]
     create_table :companies do |t|
       t.string :name, null: false
       t.string :timezone, null: false
-      t.integer :work_week_start, null: false
-
-      t.timestamps
+      t.integer :start_day, null: false
     end
   end
 end

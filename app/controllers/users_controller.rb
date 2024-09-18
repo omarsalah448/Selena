@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: %i[show update destroy]
   # before_action :authorize_request, except: :create
 
   def index
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    result = UserRegistrationService.new(user_params, company_params).call
+    result = RegisterUser.new(user_params: user_params, company_params: company_params).call
     render json: { user: result, company: result.company }, status: :created
   end
 
@@ -30,10 +30,10 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :title, :phone_number, :company_id)
+    params.require(:user).permit(%i[name email password password_confirmation title phone_number company_id])
   end
 
   def company_params
-    params.require(:user).permit(company_attributes: [:name, :timezone, :work_week_start])[:company_attributes]
+    params.require(:user).permit(company_attributes: %i[name timezone start_day])[:company_attributes]
   end
 end

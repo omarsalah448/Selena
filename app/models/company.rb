@@ -1,17 +1,11 @@
 class Company < ApplicationRecord
   has_many :users
 
-  validates :name, presence: true
-  validates :timezone, presence: true
-  validates :work_week_start, presence: true
+  validates :name, presence: true, length: { minimum: 3, maximum: 50 }
+  validates :timezone, presence: true,
+              inclusion: { in: ActiveSupport::TimeZone.all.map(&:name),
+                message: "%{value} is not a valid timezone" }
+  validates :start_day, presence: true
 
-  enum work_week_start: {
-    monday: 0,
-    tuesday: 1,
-    wednesday: 2,
-    thursday: 3,
-    friday: 4,
-    saturday: 5,
-    sunday: 6
-  }
+  enum start_day: { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 }
 end

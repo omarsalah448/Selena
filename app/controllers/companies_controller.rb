@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show, :update, :destroy]
+  before_action :set_company, only: %i[show update destroy]
   # before_action :authorize_request
 
   def index
@@ -20,7 +20,6 @@ class CompaniesController < ApplicationController
 
   def destroy
     @company.destroy
-    head :no_content
   end
 
   private
@@ -29,6 +28,6 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:name, :timezone, :work_week_start)
+    params.require(:company).permit(%i[name timezone start_day])
   end
 end
