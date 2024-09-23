@@ -31,5 +31,8 @@ module SelenaAi
 
     # Add the lib directory to the autoload paths
     config.autoload_paths << Rails.root.join('lib')
+
+    # Configure Active Job to use Sidekiq as the queue adapter
+    config.active_job.queue_adapter = :sidekiq
   end
 end

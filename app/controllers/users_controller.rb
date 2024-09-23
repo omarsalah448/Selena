@@ -1,25 +1,38 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
-  # before_action :authorize_request, except: :create
+  skip_before_action :authorize_request, only: %i[create]
+  after_action :verify_authorized, except: %i[index create]
+  after_action :verify_policy_scoped, only: :index
 
   def index
-    render json: User.all, status: :ok
+    @users = policy_scope(User)
+    @users = FilterUsersVacations.new(users: @users, start_date: params[:start_date], end_date: params[:end_date]).call
+    render json: @users, status: :ok
   end
 
+  # def show
+  #   authorize @user
+  #   render json: @user, status: :ok
+  # end
+
   def show
-    render json: @user, status: :ok
+    authorize @user
+    @vacations = GetUserVacation.new(user: @user, start_date: params[:start_date], end_date: params[:end_date]).call
+    render json: { user: @user, vacations: @vacations }, status: :ok
   end
 
   def create
-    result = RegisterUser.new(user_params: user_params, company_params: company_params).call
-    render json: { user: result, company: result.company }, status: :created
+    user, token = RegisterUser.new(user_params: user_params, device_id: params[:device_id], company_params: company_params).call
+    render json: { user: UserSerializer.new(user), token: token }, status: :created if user.persisted? && token.present?
   end
 
   def update
+    authorize @user
     render json: @user, status: :ok if @user.update!(user_params)
   end
 
   def destroy
+    authorize @user
     @user.destroy
   end
 

@@ -18,8 +18,9 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'API V1',
-        version: 'v1'
+        title: 'Selena-AI API V1',
+        version: 'v1',
+        description: 'API documentation for Selena-AI'
       },
       paths: {},
       servers: [
@@ -31,7 +32,16 @@ RSpec.configure do |config|
             }
           }
         }
-      ]
+      ],
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: :http,
+            scheme: :bearer,
+            bearerFormat: 'JWT'
+          }
+        }
+      }
     }
   }
 

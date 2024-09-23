@@ -3,10 +3,21 @@ Rails.application.routes.draw do
 
   resources :users
   resources :companies
-  post '/login', to: 'auth#login'
+  resources :vacations
+  resources :account_activations, only: %i[create update]
+  post "/login", to: "auth#login"
+  delete "/logout", to: "auth#logout"
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
 
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
+  resources :time_logs, only: [:index, :create, :update, :destroy]
 
-  root to: 'users#index'
+  root to: "users#index"
+
+  namespace :api do
+    namespace :v1 do
+      resources :companies
+    end
+  end
+
 end

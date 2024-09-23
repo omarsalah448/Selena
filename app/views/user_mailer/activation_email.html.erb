@@ -1,0 +1,7 @@
+<h1>Welcome to our app, <%= @user.name %>!</h1>
+<p>
+  You have been invited to join <%= @user.company.name %>. To activate your account, click on the link below:
+</p>
+<p><%= link_to 'Activate Account', @activation_url %></p>
+<p>Your activation token <%= @activation_token %></p>
+<p>This link will expire in 24 hours.</p>

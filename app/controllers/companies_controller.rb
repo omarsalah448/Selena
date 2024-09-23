@@ -1,6 +1,5 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: %i[show update destroy]
-  # before_action :authorize_request
 
   def index
     render json: Company.all, status: :ok

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_17_190506) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_18_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_190506) do
     t.string "name", null: false
     t.string "timezone", null: false
     t.integer "start_day", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "device_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "device_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_device_tokens_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -27,10 +37,27 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_190506) do
     t.string "name", null: false
     t.string "title", null: false
     t.string "phone_number", null: false
-    t.integer "role", default: 0, null: false
+    t.boolean "admin", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "activation_digest"
+    t.boolean "activated", default: false
+    t.datetime "activated_at"
+    t.datetime "activation_sent_at"
     t.index ["company_id"], name: "index_users_on_company_id"
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email", "activated"], name: "index_users_on_email_and_activated", unique: true
   end
 
+  create_table "vacations", force: :cascade do |t|
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_vacations_on_user_id"
+  end
+
+  add_foreign_key "device_tokens", "users"
   add_foreign_key "users", "companies"
+  add_foreign_key "vacations", "users"
 end

@@ -7,7 +7,8 @@ class CreateUsers < ActiveRecord::Migration[7.2]
       t.string :name, null: false
       t.string :title, null: false
       t.string :phone_number, null: false
-      t.integer :role, default: 0, null: false 
+      t.boolean :admin, default: false, null: false
+      t.timestamps
     end
 
     add_index :users, :email, unique: true

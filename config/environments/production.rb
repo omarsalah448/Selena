@@ -71,6 +71,19 @@ Rails.application.configure do
   # caching is enabled.
   config.action_mailer.perform_caching = false
 
+  # Add these lines to configure Redis URL and Action Mailer settings
+  config.redis_url = ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: "gmail.com",
+    user_name: ENV["EMAIL"],
+    password: ENV["EMAIL_PASSWORD"],
+    authentication: "plain",
+    enable_starttls_auto: true
+  }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false

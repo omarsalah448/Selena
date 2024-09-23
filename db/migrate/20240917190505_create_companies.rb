@@ -4,6 +4,7 @@ class CreateCompanies < ActiveRecord::Migration[7.2]
       t.string :name, null: false
       t.string :timezone, null: false
       t.integer :start_day, null: false
+      t.timestamps
     end
   end
 end

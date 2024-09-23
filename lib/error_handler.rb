@@ -4,7 +4,7 @@ module ErrorHandler
   included do
     rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
-    # Add more error handlers as needed
+    rescue_from StandardError, with: :handle_standard_error
   end
 
   private
@@ -15,5 +15,9 @@ module ErrorHandler
 
   def handle_record_invalid(exception)
     render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
+  end
+
+  def handle_standard_error(exception)
+    render json: { error: exception.message }, status: :internal_server_error
   end
 end
